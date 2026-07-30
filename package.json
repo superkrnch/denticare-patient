@@ -1,0 +1,12 @@
+{
+  "name": "denticare-patient-flutter",
+  "private": true,
+  "scripts": {
+    "build:web": "flutter build web --release",
+    "deploy": "flutter build web --release && npx -y firebase-tools@latest deploy --only hosting",
+    "deploy:preview": "flutter build web --release && npx -y firebase-tools@latest hosting:channel:deploy preview --expires 7d"
+  },
+  "devDependencies": {
+    "firebase-tools": "^15.22.0"
+  }
+}

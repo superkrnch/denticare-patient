@@ -1,0 +1,17 @@
+# Release signing configuration for the DentiCare patient app.
+#
+# 1. Generate an upload/release keystore (run once, keep the .jks file safe):
+#
+#    keytool -genkey -v -keystore denticare-release.jks \
+#      -keyalg RSA -keysize 2048 -validity 10000 -alias denticare
+#
+# 2. Copy this file to `android/key.properties` and fill in the real values.
+#    NEVER commit key.properties or the .jks file to version control.
+#
+# 3. Build a release: `flutter build appbundle` (Play Store) or `flutter build apk`.
+
+storePassword=YOUR_KEYSTORE_PASSWORD
+keyPassword=YOUR_KEY_PASSWORD
+keyAlias=denticare
+# Absolute path, or path relative to the android/app folder.
+storeFile=/absolute/path/to/denticare-release.jks

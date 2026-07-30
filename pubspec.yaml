@@ -1,0 +1,46 @@
+name: denticare_patient
+description: "DentiCare patient portal — Flutter mobile app."
+publish_to: 'none'
+version: 1.1.0+2
+
+environment:
+  sdk: ^3.9.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  provider: ^6.1.5+1
+  firebase_core: ^4.11.0
+  firebase_auth: ^6.5.4
+  cloud_firestore: ^6.6.0
+  image_picker: ^1.2.3
+  intl: ^0.20.3
+  image: ^4.8.0
+  google_sign_in: 6.2.1
+  path_drawing: ^1.0.1
+  shared_preferences: ^2.3.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.14.1
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/applogo.png
+
+flutter_launcher_icons:
+  image_path: "assets/images/applogo.png"
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  web:
+    generate: true
+    image_path: "assets/images/applogo.png"
+    background_color: "#000000"
+    theme_color: "#0D9488"
+  adaptive_icon_background: "#000000"
+  adaptive_icon_foreground: "assets/images/applogo.png"
