@@ -30,7 +30,7 @@ class HomeScreen extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.fromLTRB(18, 12, 18, 32),
       children: [
-        // Personal Header
+        // Personal Header with Dental Badge
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -46,33 +46,39 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 2),
-                Text(
-                  'Welcome to your DentiCare portal',
-                  style: TextStyle(fontSize: 13, color: AppColors.subtle(context)),
+                Row(
+                  children: [
+                    const Icon(Icons.verified_user_rounded, size: 14, color: AppColors.primary),
+                    const SizedBox(width: 4),
+                    Text(
+                      'Xeradent Dental Patient Portal',
+                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: AppColors.subtle(context)),
+                    ),
+                  ],
                 ),
               ],
             ),
             Container(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: AppColors.primary.withOpacity(0.12),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.notifications_none_rounded, color: AppColors.primary, size: 22),
+              child: const Icon(Icons.shield_outlined, color: AppColors.primary, size: 20),
             ),
           ],
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 18),
 
-        // Hero Next Visit Banner (Gradient Card)
+        // Hero Dental Appointment Banner
         Container(
           decoration: BoxDecoration(
             gradient: const LinearGradient(
-              colors: [Color(0xFF0F766E), Color(0xFF0D9488)],
+              colors: [Color(0xFF0F766E), Color(0xFF0D9488), Color(0xFF14B8A6)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(22),
             boxShadow: [
               BoxShadow(
                 color: AppColors.primary.withOpacity(0.35),
@@ -82,15 +88,15 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(22),
             child: Stack(
               children: [
                 Positioned(
-                  right: -20,
+                  right: -15,
                   bottom: -20,
                   child: Icon(
-                    Icons.calendar_month_rounded,
-                    size: 140,
+                    Icons.clean_hands_rounded,
+                    size: 150,
                     color: Colors.white.withOpacity(0.08),
                   ),
                 ),
@@ -108,20 +114,26 @@ class HomeScreen extends StatelessWidget {
                               color: Colors.white.withOpacity(0.2),
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            child: const Text(
-                              'NEXT VISIT',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 11,
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: 0.8,
-                              ),
+                            child: const Row(
+                              children: [
+                                Icon(Icons.calendar_month, color: Colors.white, size: 12),
+                                SizedBox(width: 4),
+                                Text(
+                                  'UPCOMING DENTAL VISIT',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 0.8,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           if (next != null) StatusBadge(next.status),
                         ],
                       ),
-                      const SizedBox(height: 14),
+                      const SizedBox(height: 16),
                       if (next != null) ...[
                         Text(
                           '${formatDate(next.date)} · ${formatTime(next.time)}',
@@ -134,23 +146,23 @@ class HomeScreen extends StatelessWidget {
                         const SizedBox(height: 6),
                         Row(
                           children: [
-                            const Icon(Icons.medical_services_outlined, color: Colors.white70, size: 16),
+                            const Icon(Icons.health_and_safety_outlined, color: Colors.white70, size: 16),
                             const SizedBox(width: 6),
-                            Text(
-                              next.serviceType,
-                              style: const TextStyle(color: Color.fromRGBO(255, 255, 255, 0.9), fontSize: 14, fontWeight: FontWeight.w500),
+                              Text(
+                                next.serviceType,
+                                style: const TextStyle(color: Color.fromRGBO(255, 255, 255, 0.9), fontSize: 14, fontWeight: FontWeight.w500),
                             ),
                           ],
                         ),
                       ] else ...[
                         const Text(
-                          'No upcoming visits',
-                          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
+                          'Keep Your Smile Healthy',
+                          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 4),
                         const Text(
-                          'Book your next checkup anytime below.',
-                          style: TextStyle(color: Colors.white70, fontSize: 13),
+                          'No visits scheduled. Regular checkups prevent cavities and keep your teeth shining.',
+                          style: TextStyle(color: Color.fromRGBO(255, 255, 255, 0.8), fontSize: 12, height: 1.3),
                         ),
                       ],
                     ],
@@ -160,15 +172,60 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 18),
 
+        // Live Queue Banner (If active today)
         if (queue != null) ...[
           _QueueCard(queue: queue),
-          const SizedBox(height: 16),
+          const SizedBox(height: 18),
         ],
 
-        const SectionTitle('Quick actions'),
-        const SizedBox(height: 8),
+        // Emergency Dental Banner
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          decoration: BoxDecoration(
+            color: isDark ? const Color(0xFF2A1515) : const Color(0xFFFEF2F2),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.danger.withOpacity(0.3)),
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColors.danger.withOpacity(0.12),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.medical_services_rounded, color: AppColors.danger, size: 20),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Dental Emergency or Toothache?',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                        color: isDark ? const Color(0xFFFCA5A5) : AppColors.danger,
+                      ),
+                    ),
+                    Text(
+                      'Tap to call clinic hotline or request priority care',
+                      style: TextStyle(fontSize: 11, color: AppColors.subtle(context)),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(Icons.chevron_right_rounded, color: AppColors.subtle(context)),
+            ],
+          ),
+        ),
+        const SizedBox(height: 20),
+
+        const SectionTitle('Quick Dental Actions'),
+        const SizedBox(height: 10),
 
         Wrap(
           spacing: 12,
@@ -176,56 +233,104 @@ class HomeScreen extends StatelessWidget {
           children: [
             _QuickAction(
               icon: AppIcons.calendar,
-              label: 'Book visit',
-              subtitle: 'Schedule appointment',
+              label: 'Book Visit',
+              subtitle: 'Cleanings & Checkups',
               onTap: () => showBookAppointmentSheet(context),
             ),
             _QuickAction(
               icon: AppIcons.queue,
-              label: 'My queue',
-              subtitle: 'Live status',
+              label: 'My Queue',
+              subtitle: 'Live Chair Waiting List',
               onTap: () => onNavigate(2),
             ),
             _QuickAction(
               icon: AppIcons.bills,
-              label: 'View bills',
-              subtitle: 'Statements & history',
+              label: 'Dental Bills',
+              subtitle: 'Invoices & Payments',
               onTap: () => onNavigate(3),
             ),
             _QuickAction(
               icon: AppIcons.tooth,
-              label: 'Treatments',
-              subtitle: 'Records & charts',
+              label: 'Tooth Records',
+              subtitle: 'Dental Charts & History',
               onTap: () => onNavigate(4),
             ),
             _QuickAction(
               icon: AppIcons.clinic,
-              label: 'Clinic info',
-              subtitle: 'Hours & location',
+              label: 'Clinic Hours',
+              subtitle: 'Dentist Schedules & Location',
               onTap: () => showClinicInfoSheet(context),
             ),
             _QuickAction(
               icon: AppIcons.afterCare,
-              label: 'After care',
-              subtitle: 'Recovery tips',
+              label: 'Post-Care Tips',
+              subtitle: 'Extraction & Braces Care',
               onTap: () => showAfterCareSheet(context),
             ),
             _QuickAction(
               icon: Icons.info_outline,
-              label: 'About us',
-              subtitle: 'DentiCare clinic',
+              label: 'About Clinic',
+              subtitle: 'Meet Our Dental Staff',
               onTap: () => showAboutSheet(context),
             ),
           ],
         ),
         const SizedBox(height: 24),
 
-        const SectionTitle('After your visit'),
+        // Daily Dental Tip Card
+        const SectionTitle('Daily Smile Care'),
         const SizedBox(height: 8),
-        const AfterCarePreviewCard(),
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: AppColors.surface(context),
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: AppColors.border(context)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(isDark ? 0.2 : 0.04),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withOpacity(0.12),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: const Icon(Icons.auto_awesome_rounded, color: AppColors.primary, size: 24),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Brush 2x Daily for 2 Minutes',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        color: AppColors.body(context),
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      'Use soft-bristled brushes and fluoride toothpaste to protect enamel.',
+                      style: TextStyle(fontSize: 12, color: AppColors.subtle(context), height: 1.3),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
         const SizedBox(height: 24),
 
-        const SectionTitle('Recent appointments'),
+        const SectionTitle('Recent Dental Visits'),
         const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
@@ -243,7 +348,7 @@ class HomeScreen extends StatelessWidget {
           child: recent.isEmpty
               ? const Padding(
                   padding: EdgeInsets.symmetric(vertical: 24),
-                  child: EmptyState(icon: AppIcons.calendar, message: 'No appointments'),
+                  child: EmptyState(icon: AppIcons.calendar, message: 'No past dental visits recorded'),
                 )
               : ListView.separated(
                   shrinkWrap: true,
@@ -290,7 +395,7 @@ class _QueueCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'YOUR QUEUE NUMBER TODAY',
+                    'DENTAL QUEUE TICKET',
                     style: TextStyle(
                       color: AppColors.subtle(context),
                       fontSize: 11,
@@ -311,14 +416,10 @@ class _QueueCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     queue.status == 'serving'
-                        ? 'Proceed to treatment area'
-                        : 'Please wait in the waiting room',
-                    style: TextStyle(fontSize: 13, color: AppColors.body(context)),
+                        ? 'Please proceed to Dental Chair'
+                        : 'Waiting room · Next in line soon',
+                    style: TextStyle(fontSize: 12, color: AppColors.body(context)),
                   ),
-                  if (queue.urgent) ...[
-                    const SizedBox(height: 8),
-                    const StatusBadge('urgent'),
-                  ],
                 ],
               ),
             ),
@@ -384,7 +485,7 @@ class _QuickAction extends StatelessWidget {
                   ),
                   Icon(
                     Icons.arrow_forward_ios_rounded,
-                    size: 13,
+                    size: 12,
                     color: AppColors.subtle(context).withOpacity(0.5),
                   ),
                 ],
@@ -394,7 +495,7 @@ class _QuickAction extends StatelessWidget {
                 label,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 15,
+                  fontSize: 14,
                   color: AppColors.body(context),
                 ),
               ),
@@ -402,7 +503,7 @@ class _QuickAction extends StatelessWidget {
               Text(
                 subtitle,
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 11,
                   color: AppColors.subtle(context),
                 ),
                 maxLines: 1,
@@ -437,19 +538,19 @@ class _AppointmentTile extends StatelessWidget {
                   appointment.serviceType,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 15,
+                    fontSize: 14,
                     color: AppColors.body(context),
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   '${formatDate(appointment.date)} · ${formatTime(appointment.time)}',
-                  style: TextStyle(fontSize: 13, color: AppColors.subtle(context)),
+                  style: TextStyle(fontSize: 12, color: AppColors.subtle(context)),
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  appointment.dentistName ?? 'Dentist',
-                  style: TextStyle(color: AppColors.subtle(context), fontSize: 12),
+                  appointment.dentistName ?? 'Attending Dentist',
+                  style: TextStyle(color: AppColors.subtle(context), fontSize: 11),
                 ),
               ],
             ),
@@ -458,12 +559,7 @@ class _AppointmentTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               StatusBadge(appointment.status),
-              if (appointment.urgent) ...[
-                const SizedBox(height: 4),
-                const StatusBadge('urgent'),
-              ],
-              if (showActions &&
-                  (appointment.status == 'pending' || appointment.status == 'approved'))
+              if (showActions && (appointment.status == 'pending' || appointment.status == 'approved'))
                 TextButton(
                   onPressed: () => _cancel(context, appointment.id),
                   child: const Text('Cancel', style: TextStyle(color: AppColors.danger)),
