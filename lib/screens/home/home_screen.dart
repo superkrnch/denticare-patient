@@ -148,9 +148,9 @@ class HomeScreen extends StatelessWidget {
                           children: [
                             const Icon(Icons.health_and_safety_outlined, color: Colors.white70, size: 16),
                             const SizedBox(width: 6),
-                              Text(
-                                next.serviceType,
-                                style: const TextStyle(color: Color.fromRGBO(255, 255, 255, 0.9), fontSize: 14, fontWeight: FontWeight.w500),
+                            Text(
+                              next.serviceType,
+                              style: const TextStyle(color: Color.fromRGBO(255, 255, 255, 0.9), fontSize: 14, fontWeight: FontWeight.w500),
                             ),
                           ],
                         ),
@@ -180,46 +180,53 @@ class HomeScreen extends StatelessWidget {
           const SizedBox(height: 18),
         ],
 
-        // Emergency Dental Banner
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF2A1515) : const Color(0xFFFEF2F2),
+        // Emergency Dental Banner (Interactive)
+        Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () => _showEmergencyDialog(context),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.danger.withOpacity(0.3)),
-          ),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: AppColors.danger.withOpacity(0.12),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(Icons.medical_services_rounded, color: AppColors.danger, size: 20),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              decoration: BoxDecoration(
+                color: isDark ? const Color(0xFF2A1515) : const Color(0xFFFEF2F2),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.danger.withOpacity(0.4)),
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Dental Emergency or Toothache?',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13,
-                        color: isDark ? const Color(0xFFFCA5A5) : AppColors.danger,
-                      ),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: AppColors.danger.withOpacity(0.15),
+                      shape: BoxShape.circle,
                     ),
-                    Text(
-                      'Tap to call clinic hotline or request priority care',
-                      style: TextStyle(fontSize: 11, color: AppColors.subtle(context)),
+                    child: const Icon(Icons.medical_services_rounded, color: AppColors.danger, size: 20),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Dental Emergency or Toothache?',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                            color: isDark ? const Color(0xFFFCA5A5) : AppColors.danger,
+                          ),
+                        ),
+                        Text(
+                          'Tap for hotline & priority emergency care',
+                          style: TextStyle(fontSize: 11, color: AppColors.subtle(context)),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  Icon(Icons.chevron_right_rounded, color: AppColors.subtle(context)),
+                ],
               ),
-              Icon(Icons.chevron_right_rounded, color: AppColors.subtle(context)),
-            ],
+            ),
           ),
         ),
         const SizedBox(height: 20),
@@ -362,6 +369,102 @@ class HomeScreen extends StatelessWidget {
                 ),
         ),
       ],
+    );
+  }
+
+  void _showEmergencyDialog(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: isDark ? AppColors.darkSurface : Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (ctx) {
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  margin: const EdgeInsets.only(bottom: 20),
+                  decoration: BoxDecoration(
+                    color: isDark ? AppColors.darkBorder : Colors.grey[300],
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: AppColors.danger.withOpacity(0.12),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Icon(Icons.warning_amber_rounded, color: AppColors.danger, size: 24),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Urgent Dental Care',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.body(context),
+                          ),
+                        ),
+                        Text(
+                          'Severe pain, bleeding, or broken tooth',
+                          style: TextStyle(fontSize: 12, color: AppColors.subtle(context)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const CircleAvatar(
+                  backgroundColor: AppColors.primaryLight,
+                  child: Icon(Icons.phone_in_talk, color: AppColors.primary),
+                ),
+                title: const Text('Call Clinic Hotline', style: TextStyle(fontWeight: FontWeight.w600)),
+                subtitle: const Text('+63 912 345 6789'),
+                trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  showAppToast(context, 'Calling Xeradent emergency line...');
+                },
+              ),
+              const Divider(),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const CircleAvatar(
+                  backgroundColor: Color(0xFFFEE2E2),
+                  child: Icon(Icons.flash_on, color: AppColors.danger),
+                ),
+                title: const Text('Request Urgent Appointment', style: TextStyle(fontWeight: FontWeight.w600)),
+                subtitle: const Text('Priority slot for acute dental pain'),
+                trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  showBookAppointmentSheet(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
