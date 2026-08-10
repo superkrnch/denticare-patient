@@ -11,10 +11,11 @@ class AppColors {
   static const success = Color(0xFF059669);
   static const warning = Color(0xFFD97706);
 
-  // Dark palette
-  static const darkBg = Color(0xFF0B1220);
-  static const darkSurface = Color(0xFF1E293B);
-  static const darkText = Color(0xFFE2E8F0);
+  // Modernized Dark palette
+  static const darkBg = Color(0xFF0B132B);
+  static const darkSurface = Color(0xFF1C2541);
+  static const darkSurfaceElevated = Color(0xFF232ED1);
+  static const darkText = Color(0xFFF1F5F9);
   static const darkMuted = Color(0xFF94A3B8);
 
   static const lightBorder = Color(0xFFE2E8F0);
@@ -48,7 +49,7 @@ ThemeData _buildTheme(Brightness brightness) {
   final surface = isDark ? AppColors.darkSurface : Colors.white;
   final onSurface = isDark ? AppColors.darkText : AppColors.text;
   final border = isDark ? AppColors.darkBorder : AppColors.lightBorder;
-  final fieldFill = isDark ? AppColors.darkSurface : AppColors.bg;
+  final fieldFill = isDark ? const Color(0xFF131B2E) : AppColors.bg;
 
   final colorScheme = ColorScheme.fromSeed(
     seedColor: AppColors.primary,
@@ -71,8 +72,12 @@ ThemeData _buildTheme(Brightness brightness) {
     ),
     cardTheme: CardThemeData(
       color: surface,
-      elevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: isDark ? 2 : 1,
+      shadowColor: isDark ? Colors.black.withOpacity(0.4) : Colors.black.withOpacity(0.05),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: border, width: 1),
+      ),
       margin: const EdgeInsets.only(bottom: 12),
     ),
     dividerTheme: DividerThemeData(color: border),
@@ -105,6 +110,7 @@ ThemeData _buildTheme(Brightness brightness) {
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         minimumSize: const Size.fromHeight(44),
+        side: BorderSide(color: isDark ? AppColors.primary : AppColors.primaryDark),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     ),
